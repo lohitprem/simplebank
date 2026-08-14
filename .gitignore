@@ -1,0 +1,4 @@
+simplebank
+*.exe
+.vscode/
+*.log
