@@ -2,3 +2,4 @@ simplebank
 *.exe
 .vscode/
 *.log
+app.env
