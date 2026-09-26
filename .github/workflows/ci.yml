@@ -11,13 +11,6 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
 
-    env:
-      DB_DRIVER: postgres
-      DB_SOURCE: postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable
-      SERVER_ADDRESS: 0.0.0.0:8080
-      TOKEN_SYMMETRIC_KEY: 12345678901234567890123456789012
-      ACCESS_TOKEN_DURATION: 15m
-
     services:
       postgres:
         image: postgres:12-alpine
@@ -48,6 +41,16 @@ jobs:
           curl -L https://github.com/golang-migrate/migrate/releases/download/v4.17.0/migrate.linux-amd64.tar.gz | tar xvz
           sudo mv migrate /usr/local/bin/
           which migrate
+
+      - name: Create test config
+        run: |
+          cat > app.env <<'EOF2'
+          DB_DRIVER=postgres
+          DB_SOURCE=postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable
+          SERVER_ADDRESS=0.0.0.0:8080
+          TOKEN_SYMMETRIC_KEY=12345678901234567890123456789012
+          ACCESS_TOKEN_DURATION=15m
+          EOF2
 
       - name: Run migrations
         run: make migrateup
